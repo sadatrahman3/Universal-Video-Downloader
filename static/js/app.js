@@ -412,6 +412,13 @@ async function downloadFile(id) {
     }
 }
 
+// Init
+initDOM();
+
+if (localStorage.getItem('theme') === 'light') {
+    document.body.classList.add('light');
+}
+
 // Event Listeners
 DOM.fetchBtn.addEventListener('click', handleFetch);
 DOM.urlInput.addEventListener('keydown', (e) => {
@@ -508,13 +515,6 @@ DOM.themeToggle.addEventListener('click', () => {
     const isLight = document.body.classList.toggle('light');
     localStorage.setItem('theme', isLight ? 'light' : 'dark');
 });
-
-// Init
-initDOM();
-
-if (localStorage.getItem('theme') === 'light') {
-    document.body.classList.add('light');
-}
 
 refreshDownloads();
 setInterval(refreshDownloads, 5000);
