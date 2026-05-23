@@ -270,7 +270,7 @@ function updateDownloadItem(id, data) {
         progressText.textContent = 'Done';
         fill.style.width = '100%';
         fill.className = 'progress-fill completed';
-        actionsEl.innerHTML = `<button class="btn-action download-file" onclick="downloadFile('${id}')" title="Download file">
+                actionsEl.innerHTML = `<button class="btn-action download-file" onclick="window.open('/api/download/${id}/file','_blank')" title="Download file">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
             </svg>
@@ -334,7 +334,7 @@ function renderDownloads(downloads) {
                 </svg>
             </button>`;
         } else if (isCompleted) {
-            actionsHtml = `<button class="btn-action download-file" onclick="downloadFile('${d.id}')" title="Download file">
+            actionsHtml = `<button class="btn-action download-file" onclick="window.open('/api/download/${d.id}/file','_blank')" title="Download file">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
                 </svg>
@@ -397,19 +397,7 @@ async function deleteDownload(id) {
 }
 
 async function downloadFile(id) {
-    try {
-        const res = await fetch('/api/downloads');
-        const downloads = await res.json();
-        const d = downloads.find(x => x.id === id);
-        if (d && d.filename) {
-            const fname = d.filename.split('/').pop() || d.filename;
-            window.open(`/api/file/${encodeURIComponent(fname)}`, '_blank');
-        } else {
-            showToast('File not found', 'error');
-        }
-    } catch (err) {
-        showToast('Failed to get file', 'error');
-    }
+    window.open(`/api/download/${id}/file`, '_blank');
 }
 
 // Init

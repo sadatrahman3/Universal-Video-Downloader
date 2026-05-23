@@ -357,6 +357,16 @@ def delete_download(download_id):
     return jsonify({'success': True})
 
 
+@app.route('/api/download/<download_id>/file')
+def get_download_file(download_id):
+    for fname in os.listdir(DOWNLOAD_DIR):
+        if fname.startswith(download_id):
+            filepath = os.path.join(DOWNLOAD_DIR, fname)
+            if os.path.isfile(filepath):
+                return send_file(filepath, as_attachment=True, download_name=fname)
+    return jsonify({'error': 'File not found'}), 404
+
+
 @app.route('/api/file/<path:filename>')
 def get_file(filename):
     filepath = os.path.join(DOWNLOAD_DIR, filename)
